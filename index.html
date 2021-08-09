@@ -81,7 +81,7 @@
 					alert("Please enter a number");
 				} else {
 					const wattage = parseFloat(wattString);
-					const decimalWattage = wattage * 256 + zeroWatt;
+					const decimalWattage = Math.round(wattage * 256 + zeroWatt);
 					const hexWattage = decimalWattage.toString(16).toUpperCase();
 					lastCommand = 'RW.exe /Min /Nologo /Stdout /Command="WRMSR 0x610 0x0 0x00' + hexWattage + ' 0"';
 					document.getElementById('result').innerHTML = lastCommand;
