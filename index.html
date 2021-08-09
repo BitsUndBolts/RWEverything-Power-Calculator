@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<style type="text/css">
+			html {
+				font-family: Courier New,Courier,Lucida Sans Typewriter,Lucida Typewriter,monospace;
+				background-color: #282923;
+				color: white;
+				text-align: center;
+			}
+			h1,h2,h3,h4,h5 {
+				margin:10px;
+			}
+			input {
+				padding: 20px;
+				font-size: 2.5em;
+				color: white;
+				background-color: #282923;
+				border:1px solid gray;
+				width: 130px;
+				text-align: center
+			}
+			.em25 {
+				font-size: 2.5em
+			}
+			.element {
+				margin: 20px;
+			}
+			button {
+				background-color: #666;
+				border: none;
+				color: white;
+				padding: 15px 32px;
+				text-align: center;
+				text-decoration: none;
+				display: inline-block;
+				font-size: 16px;
+				cursor: pointer;
+				width: 280px
+			}
+			button:hover {
+				background-color: #999;
+			}
+			button:active {
+				background-color: #555;
+			}
+			#result {
+				margin-top: 40px;
+			}
+			#footer {
+				position: fixed;
+				bottom: 0;
+				width: 100%;
+				padding: 20px;
+				color:#888;
+			}
+			svg {
+				cursor: pointer;
+				color: lightblue;
+			}
+
+			svg:hover {
+				color: white
+			}
+
+			.center {
+			  position: absolute;
+			  left: 50%;
+			  top: 50%;
+			  -webkit-transform: translate(-50%, -50%);
+			  transform: translate(-50%, -50%);
+			}
+		</style>
+		<script type="text/javascript">
+			const noPowerLimit = 'RW.exe /Min /Nologo /Stdout /Command="WRMSR 0x610 0x0 0x00000000 0"';
+			var lastCommand = "";
+			function calculate() {
+				const zeroWatt = 14516224;
+				const wattString = document.getElementById('watt').value;
+				if (isNaN(wattString) || wattString === "") {
+					alert("Please enter a number");
+				} else {
+					const wattage = parseFloat(wattString);
+					const decimalWattage = wattage * 256 + zeroWatt;
+					const hexWattage = decimalWattage.toString(16).toUpperCase();
+					lastCommand = 'RW.exe /Min /Nologo /Stdout /Command="WRMSR 0x610 0x0 0x00' + hexWattage + ' 0"';
+					document.getElementById('result').innerHTML = lastCommand;
+					document.getElementById('svgCommand').style.display = "inline";
+				}
+			}
+
+			const copyToClipboard = (str) => {
+				const el = document.createElement('textarea');
+				el.value = str;
+				el.setAttribute('readonly', '');
+				el.style.position = 'absolute';
+				el.style.left = '-9999px';
+				document.body.appendChild(el);
+				el.select();
+				document.execCommand('copy');
+				document.body.removeChild(el);
+				document.getElementById('copied').style.display = "inline";
+				setTimeout(() => {document.getElementById('copied').style.display = "none";}, 2500);
+			};
+		</script>
+		<title>RWEverything Watt Calculatorcop</title>
+	</head>
+	<body>
+		<div class="element">
+			<h1>RWEverything</h1>
+		</div>
+		<div class="element">
+			<h3>Power Limit Wattage Calculator</h3>
+		</div></div>
+		<div class="element">
+			<input type="text" id="watt" maxlength="5" value ="9"></input> <span class="em25">Watt</span>
+		</div>
+		<div class="element">
+			<button onclick="calculate()">Calculate</button>
+		</div>
+		<div class="element">
+			<span id="result"></span>
+			<svg id="svgCommand" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-clipboard-plus" style="display: none" viewBox="0 0 16 16" onclick="(() => { copyToClipboard(lastCommand) })()">
+				<path fill-rule="evenodd" d="M8 7a.5.5 0 0 1 .5.5V9H10a.5.5 0 0 1 0 1H8.5v1.5a.5.5 0 0 1-1 0V10H6a.5.5 0 0 1 0-1h1.5V7.5A.5.5 0 0 1 8 7z"/>
+				<path d="M4 1.5H3a2 2 0 0 0-2 2V14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V3.5a2 2 0 0 0-2-2h-1v1h1a1 1 0 0 1 1 1V14a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V3.5a1 1 0 0 1 1-1h1v-1z"/>
+				<path d="M9.5 1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-3a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5h3zm-3-1A1.5 1.5 0 0 0 5 1.5v1A1.5 1.5 0 0 0 6.5 4h3A1.5 1.5 0 0 0 11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3z"/>
+			</svg>
+		</div>
+
+		<div id="copied" class="center" style="display: none">
+			Copied to Clipboard
+		</div>
+
+		<div id="footer">
+			If you want to disable the power limit completely use this command:
+			<div style="margin: 5px">
+				RW.exe /Min /Nologo /Stdout /Command="WRMSR 0x610 0x0 0x00000000 0"
+				<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-clipboard-plus" viewBox="0 0 16 16" onclick="(() => { copyToClipboard(noPowerLimit) })()">
+					<path fill-rule="evenodd" d="M8 7a.5.5 0 0 1 .5.5V9H10a.5.5 0 0 1 0 1H8.5v1.5a.5.5 0 0 1-1 0V10H6a.5.5 0 0 1 0-1h1.5V7.5A.5.5 0 0 1 8 7z"/>
+					<path d="M4 1.5H3a2 2 0 0 0-2 2V14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V3.5a2 2 0 0 0-2-2h-1v1h1a1 1 0 0 1 1 1V14a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V3.5a1 1 0 0 1 1-1h1v-1z"/>
+					<path d="M9.5 1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-3a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5h3zm-3-1A1.5 1.5 0 0 0 5 1.5v1A1.5 1.5 0 0 0 6.5 4h3A1.5 1.5 0 0 0 11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3z"/>
+				</svg>
+			</div>
+		</div>
+	</body>
+</html>
