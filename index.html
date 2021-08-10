@@ -12,6 +12,7 @@
 				margin:10px;
 			}
 			input {
+				border-radius: 5px;
 				padding: 20px;
 				font-size: 2.5em;
 				color: white;
@@ -54,32 +55,52 @@
 				padding: 20px;
 				color:#888;
 			}
+			#donate {
+				z-index: 9999;
+				border-radius: 5px;
+				text-align: left;
+				background-color: #444;
+				width: 600px;
+				height: 160px;
+				padding-top:50px;
+				padding-left:50px;
+			}
+			#donate td {
+				padding:5px;
+			}
+			#donate td:first-of-type {
+				color: #888;
+				font-weight: bold;
+			}
+			#close {
+				position: absolute;
+				top: 5px;
+				right: 10px;
+			}
+			#close a {
+				font-size: 1.5em
+			}
 			svg {
 				cursor: pointer;
 				color: lightblue;
 			}
-
 			svg:hover {
 				color: white
 			}
-
 			.center {
-			  position: absolute;
-			  left: 50%;
-			  top: 50%;
-			  -webkit-transform: translate(-50%, -50%);
-			  transform: translate(-50%, -50%);
+				position: absolute;
+				left: 50%;
+				top: 50%;
+				-webkit-transform: translate(-50%, -50%);
+				transform: translate(-50%, -50%);
 			}
-
 			a {
 				color: lightblue;
 				text-decoration: none;
 			}
-
 			a:active {
 				color: white;
 			}
-
 			a:visited {
 				color: lightblue;
 			}
@@ -102,7 +123,6 @@
 					document.getElementById('svgCommand').style.display = "inline";
 				}
 			}
-
 			const copyToClipboard = (str) => {
 				const el = document.createElement('textarea');
 				el.value = str;
@@ -116,6 +136,15 @@
 				document.getElementById('copied').style.display = "inline";
 				setTimeout(() => {document.getElementById('copied').style.display = "none";}, 2500);
 			};
+
+			function toggleDonate() {
+				const value = document.getElementById('donate').style.display;
+				if (value === "none") {
+					document.getElementById('donate').style.display = "inline";
+				} else {
+					document.getElementById('donate').style.display = "none";
+				}
+			}
 		</script>
 		<title>RWEverything Watt Calculatorcop</title>
 	</head>
@@ -140,11 +169,9 @@
 				<path d="M9.5 1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-3a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5h3zm-3-1A1.5 1.5 0 0 0 5 1.5v1A1.5 1.5 0 0 0 6.5 4h3A1.5 1.5 0 0 0 11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3z"/>
 			</svg>
 		</div>
-
 		<div id="copied" class="center" style="display: none">
 			Copied to Clipboard
 		</div>
-
 		<div id="footer">
 			If you want to disable the power limit completely use this command:
 			<div style="margin: 5px">
@@ -159,6 +186,32 @@
 			<div>
 				>> <a href="http://rweverything.com/" target="_blank">RWEverything</a> <<
 			</div>
+			<div style="float: left"><a href="javascript:void(0)" onclick="toggleDonate()">Donate</a></div>
+		</div>
+		<div id="donate" class="center" style="display: none">
+			<div id="close"><a href="javascript:void(0)" onclick="toggleDonate()" />X</a></div>
+			<table>
+				<tr>
+					<td>Bitcoin</td>
+					<td><span>bc1qyjxfk8kfpngamlt9lvwatfetu2h2ugh70hklwk</td>
+				</tr>
+				<tr>
+					<td>Doge</td>
+					<td>DHh6KUPEudi1yLPjfQ3h9GSDL6fzWA4qor</td>
+				</tr>
+				<tr>
+					<td>Litecoin</td>
+					<td>ltc1qtdg22reeqqm8nnet5myur9zmxy3lrs0xvrq6gz</td>
+				</tr>
+				<tr>
+					<td>Bitcoin Cash</td>
+					<td>qpsa6y8kncvu497xu9t7wlxy9tfmzde2fszhtpf708</td>
+				</tr>
+				<tr>
+					<td>Ethereum</td>
+					<td>0x69adDfE8def827FB0ef2802b81fD48932A19f1a5</td>
+				</tr>
+			</table>
 		</div>
 	</body>
 </html>
